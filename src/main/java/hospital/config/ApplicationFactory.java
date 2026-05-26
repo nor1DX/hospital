@@ -6,6 +6,8 @@ import hospital.repository.DepartmentRepository;
 import hospital.repository.PatientRepository;
 import hospital.repository.inmemory.DepartmentRepositoryInMemory;
 import hospital.repository.inmemory.PatientRepositoryInMemory;
+import hospital.repository.jdbc.DepartmentRepositoryJdbc;
+import hospital.repository.jdbc.PatientRepositoryJdbc;
 import hospital.service.DepartmentService;
 import hospital.service.DepartmentServiceImpl;
 import hospital.service.PatientService;
@@ -13,7 +15,7 @@ import hospital.service.PatientServiceImpl;
 
 public class ApplicationFactory {
 
-    private static final RepositoryType REPOSITORY_TYPE = RepositoryType.IN_MEMORY;
+    private static final RepositoryType REPOSITORY_TYPE = RepositoryType.JDBC;
 
     private final DepartmentRepository departmentRepository;
     private final PatientRepository patientRepository;
@@ -23,6 +25,9 @@ public class ApplicationFactory {
     private final PatientController patientController;
 
     public ApplicationFactory() {
+        if (REPOSITORY_TYPE == RepositoryType.JDBC) {
+            DatabaseInitializer.initialize();
+        }
         this.departmentRepository = createDepartmentRepository();
         this.patientRepository = createPatientRepository();
         this.departmentService = new DepartmentServiceImpl(departmentRepository);
@@ -34,14 +39,14 @@ public class ApplicationFactory {
     private DepartmentRepository createDepartmentRepository() {
         return switch (REPOSITORY_TYPE) {
             case IN_MEMORY -> new DepartmentRepositoryInMemory();
-            case JDBC -> throw new UnsupportedOperationException("JDBC not implemented yet");
+            case JDBC -> new DepartmentRepositoryJdbc();
         };
     }
 
     private PatientRepository createPatientRepository() {
         return switch (REPOSITORY_TYPE) {
             case IN_MEMORY -> new PatientRepositoryInMemory();
-            case JDBC -> throw new UnsupportedOperationException("JDBC not implemented yet");
+            case JDBC -> new PatientRepositoryJdbc();
         };
     }
 
