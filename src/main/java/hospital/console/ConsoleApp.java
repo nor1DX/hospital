@@ -19,22 +19,22 @@ public class ConsoleApp {
     }
 
     public void run() {
-        System.out.println("=== Система управления больницей ===");
+        System.out.println("=== Hospital Management System ===");
         boolean running = true;
         while (running) {
-            System.out.println("\n1. Отделения");
-            System.out.println("2. Пациенты");
-            System.out.println("0. Выход");
-            System.out.print("Выберите: ");
+            System.out.println("\n1. Departments");
+            System.out.println("2. Patients");
+            System.out.println("0. Exit");
+            System.out.print("Choose: ");
 
             switch (scanner.nextLine().trim()) {
                 case "1" -> departmentMenu.show();
                 case "2" -> patientMenu.show();
                 case "0" -> {
                     running = false;
-                    System.out.println("До свидания!");
+                    System.out.println("Goodbye!");
                 }
-                default -> System.out.println("Неверный выбор.");
+                default -> System.out.println("Invalid option.");
             }
         }
     }

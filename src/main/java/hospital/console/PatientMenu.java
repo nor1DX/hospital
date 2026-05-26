@@ -21,13 +21,13 @@ public class PatientMenu {
     public void show() {
         boolean running = true;
         while (running) {
-            System.out.println("\n=== Пациенты ===");
-            System.out.println("1. Список всех пациентов");
-            System.out.println("2. Добавить пациента");
-            System.out.println("3. Редактировать пациента");
-            System.out.println("4. Удалить пациента");
-            System.out.println("0. Назад");
-            System.out.print("Выберите: ");
+            System.out.println("\n=== Patients ===");
+            System.out.println("1. List all patients");
+            System.out.println("2. Add patient");
+            System.out.println("3. Edit patient");
+            System.out.println("4. Delete patient");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
 
             switch (scanner.nextLine().trim()) {
                 case "1" -> listPatients();
@@ -35,7 +35,7 @@ public class PatientMenu {
                 case "3" -> editPatient();
                 case "4" -> deletePatient();
                 case "0" -> running = false;
-                default -> System.out.println("Неверный выбор.");
+                default -> System.out.println("Invalid option.");
             }
         }
     }
@@ -43,10 +43,10 @@ public class PatientMenu {
     private void listPatients() {
         List<PatientDto> patients = controller.findAll();
         if (patients.isEmpty()) {
-            System.out.println("Пациенты не найдены.");
+            System.out.println("No patients found.");
             return;
         }
-        System.out.println("\nID  | ФИО                          | Возраст | Пол      | Отделение");
+        System.out.println("\nID  | Full name                    | Age     | Gender   | Department");
         System.out.println("----|------------------------------|---------|----------|--------------------");
         for (PatientDto p : patients) {
             System.out.printf("%-4d| %-29s| %-8d| %-9s| %s%n",
@@ -58,18 +58,18 @@ public class PatientMenu {
     private void addPatient() {
         List<DepartmentDto> departments = controller.findAllDepartments();
         if (departments.isEmpty()) {
-            System.out.println("Сначала создайте хотя бы одно отделение.");
+            System.out.println("Please create a department first.");
             return;
         }
 
-        System.out.print("ФИО пациента: ");
+        System.out.print("Full name: ");
         String fullName = scanner.nextLine().trim();
         if (fullName.isEmpty()) {
-            System.out.println("ФИО не может быть пустым.");
+            System.out.println("Full name cannot be empty.");
             return;
         }
 
-        Integer age = readInt("Возраст: ");
+        Integer age = readInt("Age: ");
         if (age == null) {
             return;
         }
@@ -79,41 +79,42 @@ public class PatientMenu {
             return;
         }
 
-        System.out.println("Доступные отделения:");
+        System.out.println("Available departments:");
         for (DepartmentDto d : departments) {
             System.out.println("  [" + d.getId() + "] " + d.getName());
         }
-        Long departmentId = readId("ID отделения: ");
+        Long departmentId = readId("Department ID: ");
         if (departmentId == null) {
             return;
         }
 
         try {
             PatientDto created = controller.create(fullName, age, gender, departmentId);
-            System.out.println("Пациент добавлен: [" + created.getId() + "] " + created.getFullName());
+            System.out.println("Patient added: [" + created.getId() + "] " + created.getFullName());
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void editPatient() {
-        Long id = readId("ID пациента: ");
+        Long id = readId("Patient ID: ");
         if (id == null) {
             return;
         }
         try {
             PatientDto current = controller.findById(id);
-            System.out.println("Текущие данные: " + current.getFullName()
-                    + ", " + current.getAge() + " лет, " + current.getGender().getDisplayName()
-                    + ", отделение: " + current.getDepartmentName());
+            System.out.println("Current: " + current.getFullName()
+                    + ", age " + current.getAge()
+                    + ", " + current.getGender().getDisplayName()
+                    + ", department: " + current.getDepartmentName());
 
-            System.out.print("Новое ФИО [" + current.getFullName() + "]: ");
+            System.out.print("New full name [" + current.getFullName() + "]: ");
             String fullName = scanner.nextLine().trim();
             if (fullName.isEmpty()) {
                 fullName = current.getFullName();
             }
 
-            Integer age = readInt("Новый возраст [" + current.getAge() + "]: ");
+            Integer age = readInt("New age [" + current.getAge() + "]: ");
             if (age == null) {
                 return;
             }
@@ -124,43 +125,43 @@ public class PatientMenu {
             }
 
             List<DepartmentDto> departments = controller.findAllDepartments();
-            System.out.println("Доступные отделения:");
+            System.out.println("Available departments:");
             for (DepartmentDto d : departments) {
                 System.out.println("  [" + d.getId() + "] " + d.getName());
             }
-            Long departmentId = readId("ID отделения [" + current.getDepartmentId() + "]: ");
+            Long departmentId = readId("Department ID [" + current.getDepartmentId() + "]: ");
             if (departmentId == null) {
                 departmentId = current.getDepartmentId();
             }
 
             controller.update(id, fullName, age, gender, departmentId);
-            System.out.println("Пациент обновлён.");
+            System.out.println("Patient updated.");
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void deletePatient() {
-        Long id = readId("ID пациента: ");
+        Long id = readId("Patient ID: ");
         if (id == null) {
             return;
         }
         try {
             controller.delete(id);
-            System.out.println("Пациент удалён.");
+            System.out.println("Patient deleted.");
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private Gender readGender() {
-        System.out.println("Пол: 1. Мужской  2. Женский");
-        System.out.print("Выберите: ");
+        System.out.println("Gender: 1. Male  2. Female");
+        System.out.print("Choose: ");
         return switch (scanner.nextLine().trim()) {
             case "1" -> Gender.MALE;
             case "2" -> Gender.FEMALE;
             default -> {
-                System.out.println("Неверный выбор пола.");
+                System.out.println("Invalid gender choice.");
                 yield null;
             }
         };
@@ -175,7 +176,7 @@ public class PatientMenu {
             }
             return Long.parseLong(line);
         } catch (NumberFormatException e) {
-            System.out.println("Введите корректный ID.");
+            System.out.println("Please enter a valid ID.");
             return null;
         }
     }
@@ -185,7 +186,7 @@ public class PatientMenu {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
-            System.out.println("Введите корректное число.");
+            System.out.println("Please enter a valid number.");
             return null;
         }
     }

@@ -20,14 +20,14 @@ public class DepartmentMenu {
     public void show() {
         boolean running = true;
         while (running) {
-            System.out.println("\n=== Отделения ===");
-            System.out.println("1. Список отделений");
-            System.out.println("2. Добавить отделение");
-            System.out.println("3. Редактировать отделение");
-            System.out.println("4. Удалить отделение");
-            System.out.println("5. Пациенты отделения");
-            System.out.println("0. Назад");
-            System.out.print("Выберите: ");
+            System.out.println("\n=== Departments ===");
+            System.out.println("1. List departments");
+            System.out.println("2. Add department");
+            System.out.println("3. Edit department");
+            System.out.println("4. Delete department");
+            System.out.println("5. View patients in department");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
 
             switch (scanner.nextLine().trim()) {
                 case "1" -> listDepartments();
@@ -36,7 +36,7 @@ public class DepartmentMenu {
                 case "4" -> deleteDepartment();
                 case "5" -> showDepartmentPatients();
                 case "0" -> running = false;
-                default -> System.out.println("Неверный выбор.");
+                default -> System.out.println("Invalid option.");
             }
         }
     }
@@ -44,10 +44,10 @@ public class DepartmentMenu {
     private void listDepartments() {
         List<DepartmentDto> departments = controller.findAll();
         if (departments.isEmpty()) {
-            System.out.println("Отделения не найдены.");
+            System.out.println("No departments found.");
             return;
         }
-        System.out.println("\nID  | Название                     | Пациентов");
+        System.out.println("\nID  | Name                         | Patients");
         System.out.println("----|------------------------------|----------");
         for (DepartmentDto d : departments) {
             System.out.printf("%-4d| %-29s| %d%n", d.getId(), d.getName(), d.getPatientCount());
@@ -55,72 +55,72 @@ public class DepartmentMenu {
     }
 
     private void addDepartment() {
-        System.out.print("Название отделения: ");
+        System.out.print("Department name: ");
         String name = scanner.nextLine().trim();
         if (name.isEmpty()) {
-            System.out.println("Название не может быть пустым.");
+            System.out.println("Name cannot be empty.");
             return;
         }
         DepartmentDto created = controller.create(name);
-        System.out.println("Отделение добавлено: [" + created.getId() + "] " + created.getName());
+        System.out.println("Department added: [" + created.getId() + "] " + created.getName());
     }
 
     private void editDepartment() {
-        Long id = readId("ID отделения: ");
+        Long id = readId("Department ID: ");
         if (id == null) {
             return;
         }
         try {
             DepartmentDto current = controller.findById(id);
-            System.out.println("Текущее название: " + current.getName());
-            System.out.print("Новое название: ");
+            System.out.println("Current name: " + current.getName());
+            System.out.print("New name: ");
             String name = scanner.nextLine().trim();
             if (name.isEmpty()) {
-                System.out.println("Название не может быть пустым.");
+                System.out.println("Name cannot be empty.");
                 return;
             }
             controller.update(id, name);
-            System.out.println("Отделение обновлено.");
+            System.out.println("Department updated.");
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void deleteDepartment() {
-        Long id = readId("ID отделения: ");
+        Long id = readId("Department ID: ");
         if (id == null) {
             return;
         }
         try {
             controller.delete(id);
-            System.out.println("Отделение удалено.");
+            System.out.println("Department deleted.");
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void showDepartmentPatients() {
-        Long id = readId("ID отделения: ");
+        Long id = readId("Department ID: ");
         if (id == null) {
             return;
         }
         try {
             DepartmentDto department = controller.findById(id);
             List<PatientDto> patients = controller.getPatients(id);
-            System.out.println("\nОтделение: " + department.getName()
-                    + " (пациентов: " + department.getPatientCount() + ")");
+            System.out.println("\nDepartment: " + department.getName()
+                    + " (patients: " + department.getPatientCount() + ")");
             if (patients.isEmpty()) {
-                System.out.println("Пациентов нет.");
+                System.out.println("No patients.");
                 return;
             }
-            System.out.println("ID  | ФИО                          | Возраст | Пол");
+            System.out.println("ID  | Full name                    | Age     | Gender");
             System.out.println("----|------------------------------|---------|--------");
             for (PatientDto p : patients) {
                 System.out.printf("%-4d| %-29s| %-8d| %s%n",
                         p.getId(), p.getFullName(), p.getAge(), p.getGender().getDisplayName());
             }
         } catch (RuntimeException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class DepartmentMenu {
         try {
             return Long.parseLong(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
-            System.out.println("Введите корректный ID.");
+            System.out.println("Please enter a valid ID.");
             return null;
         }
     }

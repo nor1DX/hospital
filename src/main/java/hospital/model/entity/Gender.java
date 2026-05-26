@@ -1,8 +1,8 @@
 package hospital.model.entity;
 
 public enum Gender {
-    MALE("Мужской"),
-    FEMALE("Женский");
+    MALE("Male"),
+    FEMALE("Female");
 
     private final String displayName;
 
