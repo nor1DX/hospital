@@ -9,9 +9,10 @@ import hospital.repository.inmemory.PatientRepositoryInMemory;
 import hospital.repository.jdbc.DepartmentRepositoryJdbc;
 import hospital.repository.jdbc.PatientRepositoryJdbc;
 import hospital.service.DepartmentService;
-import hospital.service.DepartmentServiceImpl;
 import hospital.service.PatientService;
-import hospital.service.PatientServiceImpl;
+import hospital.service.impl.DepartmentServiceImpl;
+import hospital.service.impl.PatientServiceImpl;
+import hospital.web.WebApp;
 
 public class ApplicationFactory {
 
@@ -56,5 +57,9 @@ public class ApplicationFactory {
 
     public PatientController getPatientController() {
         return patientController;
+    }
+
+    public WebApp createWebApp() {
+        return new WebApp(departmentController, patientController);
     }
 }

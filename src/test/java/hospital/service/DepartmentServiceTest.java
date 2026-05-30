@@ -7,6 +7,7 @@ import hospital.model.request.DepartmentCreateRequest;
 import hospital.model.request.DepartmentUpdateRequest;
 import hospital.repository.DepartmentRepository;
 import hospital.repository.inmemory.DepartmentRepositoryInMemory;
+import hospital.service.impl.DepartmentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package hospital.service;
+package hospital.service.impl;
 
 import hospital.component.exception.DepartmentNotFoundException;
 import hospital.component.exception.PatientNotFoundException;
@@ -9,6 +9,7 @@ import hospital.model.request.PatientCreateRequest;
 import hospital.model.request.PatientUpdateRequest;
 import hospital.repository.DepartmentRepository;
 import hospital.repository.PatientRepository;
+import hospital.service.PatientService;
 
 import java.util.List;
 import java.util.stream.Collectors;

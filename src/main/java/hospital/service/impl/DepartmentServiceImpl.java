@@ -1,4 +1,4 @@
-package hospital.service;
+package hospital.service.impl;
 
 import hospital.component.exception.DepartmentNotFoundException;
 import hospital.model.dto.DepartmentDto;
@@ -6,6 +6,7 @@ import hospital.model.entity.Department;
 import hospital.model.request.DepartmentCreateRequest;
 import hospital.model.request.DepartmentUpdateRequest;
 import hospital.repository.DepartmentRepository;
+import hospital.service.DepartmentService;
 
 import java.util.List;
 import java.util.stream.Collectors;
