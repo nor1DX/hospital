@@ -12,6 +12,8 @@ import hospital.repository.DepartmentRepository;
 import hospital.repository.PatientRepository;
 import hospital.repository.inmemory.DepartmentRepositoryInMemory;
 import hospital.repository.inmemory.PatientRepositoryInMemory;
+import hospital.service.impl.DepartmentServiceImpl;
+import hospital.service.impl.PatientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
